@@ -2,3 +2,44 @@
 /.gradle/
 /build/
 /build/classes/kotlin/main/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Ktor
+.ktor/
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Application configs
+application.conf
+application.yaml
+*.properties
+
+# Keystores
+*.keystore
+*.jks
+
+# Database
+*.db
+*.sqlite
+
+# Temporary files
+temp/
+tmp/
+
+# Secrets
+.env
+.env.local
+.env.*.local
+*.env
