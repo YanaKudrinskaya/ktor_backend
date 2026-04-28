@@ -31,6 +31,12 @@ dependencies {
     implementation(libs.exposed.dao)
     implementation(libs.exposed.jdbc)
 
+    //postgres
+    implementation(libs.postgresql)
+
+    // Для работы с .env файлами
+    implementation("io.github.cdimascio:dotenv-kotlin:6.4.2")
+
     testImplementation(kotlin("test"))
     testImplementation(ktorLibs.server.testHost)
 
