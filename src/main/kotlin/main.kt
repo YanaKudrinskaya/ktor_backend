@@ -5,6 +5,7 @@ import org.jetbrains.exposed.sql.Database
 import io.github.cdimascio.dotenv.dotenv
 import io.ktor.server.engine.embeddedServer
 import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.transactions.transaction
 import ru.playzone.database.games.Games
 import ru.playzone.database.tokens.Tokens
 import ru.playzone.database.users.Users
@@ -34,7 +35,10 @@ fun main(args: Array<String>) {
         user = dbUser,
         password = dbPassword
     )
-    SchemaUtils.create(Users, Tokens, Games)
+    transaction {
+        SchemaUtils.create(Users, Tokens, Games)
+        println("Tables created successfully")
+    }
 
     embeddedServer(CIO, port = serverPort, host = "0.0.0.0") {
         rootModule()
