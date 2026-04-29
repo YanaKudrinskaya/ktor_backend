@@ -4,6 +4,7 @@ import io.ktor.server.engine.*
 import io.ktor.server.application.*
 import org.jetbrains.exposed.sql.Database
 import io.github.cdimascio.dotenv.dotenv
+import io.ktor.server.cio.CIO
 
 fun main(args: Array<String>) {
 
@@ -20,7 +21,7 @@ fun main(args: Array<String>) {
         password = dotenv["POSTGRES_PASSWORD"]
     )
     embeddedServer(
-        factory = io.ktor.server.cio.CIO,
+        factory = CIO,
         port = dotenv["SERVER_PORT"].toInt(),
         host = "0.0.0.0",
         module = Application::rootModule
