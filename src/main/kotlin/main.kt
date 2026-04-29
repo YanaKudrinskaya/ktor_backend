@@ -1,29 +1,37 @@
 package ru.playzone
 
-import io.ktor.server.engine.*
-import io.ktor.server.application.*
+import io.ktor.server.cio.*
 import org.jetbrains.exposed.sql.Database
 import io.github.cdimascio.dotenv.dotenv
-import io.ktor.server.cio.CIO
+import io.ktor.server.engine.embeddedServer
 
 fun main(args: Array<String>) {
-
-    val dotenv = dotenv {
-        filename = ".env.local"
-        ignoreIfMalformed = true
-        ignoreIfMissing = false
+    val dotenv = try {
+        dotenv {
+            filename = ".env.local"
+            ignoreIfMalformed = true
+            ignoreIfMissing = true
+        }
+    } catch (e: Exception) {
+        null
     }
 
+    val dbUrl = dotenv?.get("DATABASE_CONNECTION_STRING") ?: System.getenv("DATABASE_CONNECTION_STRING")
+    val dbUser = dotenv?.get("POSTGRES_USER") ?: System.getenv("POSTGRES_USER")
+    val dbPassword = dotenv?.get("POSTGRES_PASSWORD") ?: System.getenv("POSTGRES_PASSWORD")
+    val serverPort = (dotenv?.get("SERVER_PORT") ?: System.getenv("PORT") ?: System.getenv("SERVER_PORT"))?.toInt() ?: 8080
+
+    println("Starting server on port $serverPort")
+    println("Database connection: $dbUrl")
+
     Database.connect(
-        url = dotenv["DATABASE_CONNECTION_STRING"],
+        url = dbUrl,
         driver = "org.postgresql.Driver",
-        user = dotenv["POSTGRES_USER"],
-        password = dotenv["POSTGRES_PASSWORD"]
+        user = dbUser,
+        password = dbPassword
     )
-    embeddedServer(
-        factory = CIO,
-        port = dotenv["SERVER_PORT"].toInt(),
-        host = "0.0.0.0",
-        module = Application::rootModule
-    ).start(wait = true)
+
+    embeddedServer(CIO, port = serverPort, host = "0.0.0.0") {
+        rootModule()
+    }.start(wait = true)
 }
