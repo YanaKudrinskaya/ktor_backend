@@ -7,7 +7,7 @@ COPY gradlew .
 COPY gradle gradle
 COPY build.gradle.kts .
 COPY settings.gradle.kts .
-COPY libs.versions.toml gradle/libs.versions.toml
+COPY gradle/libs.versions.toml gradle/libs.versions.toml
 
 # Даем права на выполнение gradlew
 RUN chmod +x gradlew
