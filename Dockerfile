@@ -28,4 +28,4 @@ WORKDIR /app
 # Копируем собранный jar из предыдущего этапа
 COPY --from=builder /app/build/libs/playzone_backend-all.jar app.jar
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-cp", "app.jar", "ru.playzone.MainKt"]
